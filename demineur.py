@@ -21,9 +21,6 @@ nbclic =  0
 # nombre de mine dans le tableau
 nbMines = 12
  
-# nombre de case qui ne contiennent pas de mines
-nbClicTotal = nb_col_Jeu * nb_lgn_Jeu - nbMines
- 
  
  
 """ création des fonctions utilisé """
@@ -42,6 +39,7 @@ def CreeTerrainMine(nb_col_Jeu, nb_lgn_Jeu):
     liste_mines=[]
  
     # boucle pour placer les mines dans le tableau
+    print(nbMines)
     while len(liste_mines)<nbMines:
         # on prends un nombre aléatoire entre 0 et lignes X colonnes-1 puis on le mets dans la variable 'n'
         # lignes X colonnes-1 permet de savoir combien il y a des cases dans la tableau. On mets -1 à la fin car le tableau commence à 0
@@ -86,7 +84,7 @@ def CreeTerrainMine(nb_col_Jeu, nb_lgn_Jeu):
  
     # affichage du tableau en ligne de commande
     # for lgn in tableauMines:
-        # print(lgn)
+    #     print(lgn)
  
     return tableauMines
  
@@ -172,9 +170,25 @@ def isMine(bouton):
 def jouerDemineur():
     # variable qui est utilisée à l'intérieur de la fonction est la même que celle qui est définie à l'extérieur de la fonction
     global nbclic
+    global entry
+    global entry2
+    global nb_col_Jeu
+    global nb_lgn_Jeu
+    global nbMines
+    global nbClicTotal
  
     # création d'une variable qui servira à vérifier si tout les bouton (or mines) ont bien étais cliqué
     nbclic =  0
+
+    if entry.get() != '':
+        nbMines = int(entry.get())
+
+    if entry2.get() != '':
+        nb_col_Jeu = int(entry2.get())
+        nb_lgn_Jeu = int(entry2.get())
+
+    # nombre de case qui ne contiennent pas de mines
+    nbClicTotal = nb_col_Jeu * nb_lgn_Jeu - nbMines
    
     terrainMine = CreeTerrainMine(nb_col_Jeu, nb_lgn_Jeu)
     bouton(can,terrainMine)
@@ -186,12 +200,25 @@ if __name__ == "__main__":
     fenetre.title("Jeu du démineur")
  
     #création de la zone graphique  
-    can = Canvas(fenetre, width = 500, height = 500, bg = "white")
-    can.pack(side = TOP, padx = 5, pady = 5)
-    b1 = Button(fenetre, text = "Nouvelle partie", command = jouerDemineur)
-    b1.pack(padx = 5, pady = 5)
- 
+    can = Canvas(fenetre, width = 550, height = 550, bg = "white")
+    can.pack(side = TOP, padx = 5, pady = 10)
+
+    
+    Label(fenetre, text="Entrez le nombre de mines", font=('Calibri 10')).pack()
+
+    # entrez le nombre de mines
+    entry= Entry(fenetre, width= 30)
+    entry.pack(padx=5, pady=5)
+
+
+    Label(fenetre, text="Entrez le nombre de lignes/colonnes", font=('Calibri 10')).pack()
+
+    # entrez le nombre de colonne et de ligne
+    entry2= Entry(fenetre, width= 30)
+    entry2.pack()
+
+    button = Button(fenetre, text="Nouvelle partie", command=jouerDemineur)
+    button.pack(padx=5, pady=10)
    
     fenetre.mainloop()
- 
 
